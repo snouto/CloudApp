@@ -2,7 +2,7 @@ CloudApp
 ========
 
 This System is delivered as a final project for The course of Cloud and Grid Computing in the university of Manchester.
-The project is delivered in fulfilment of the MSc degree in Computational Biology presented by Mohamed Ibrahim.
+MSc degree in Computational Biology presented by Mohamed Ibrahim.
 
 Business Goals and Objectives
 =============================
