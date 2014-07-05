@@ -80,4 +80,4 @@ USE_TZ = True
 STATIC_URL = 'http://54.191.59.70:8080/static/'
 STATIC_ROOT = '/home/ec2-user/tools/project/CloudApp/pubmed/pubmed/views/'
 STATICFILES_DIRS = ( '/home/ec2-user/tools/project/CloudApp/pubmed/pubmed/views/css/','/home/ec2-user/tools/project/CloudApp/pubmed/pubmed/views/js/','/home/ec2-user/tools/project/CloudApp/pubmed/pubmed/views/img/')
-SEARCHINDEX_CORPUS = '/home/ec2-user/tools/project/CloudApp/pubmed/pubmed/processing/indexdir'
+SEARCHINDEX_CORPUS = '/home/ec2-user/tools/project/indexdir'
