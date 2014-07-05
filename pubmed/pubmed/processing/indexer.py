@@ -1,137 +1,75 @@
-__author__ = 'mohamed'
+__author__ ="Mohamed"
 
+
+import whoosh ,sys
+from whoosh.fields import Schema, TEXT, KEYWORD, ID, STORED
+from whoosh.analysis import StandardAnalyzer
+from articleSchema import ArticleDocument
+from whoosh.index import create_in
 from Mongo import MongoManager
-from articleDocument import ArticleDocument
-
-import sys, os, lucene, threading, time
-from datetime import datetime
-
-from java.io import File
-from org.apache.lucene.analysis.miscellaneous import LimitTokenCountAnalyzer
-from org.apache.lucene.analysis.standard import StandardAnalyzer
-from org.apache.lucene.document import Document, Field, FieldType
-from org.apache.lucene.index import FieldInfo, IndexWriter, IndexWriterConfig
-from org.apache.lucene.store import SimpleFSDirectory
-from org.apache.lucene.util import Version
-
+from whoosh import index
 
 class CloudIndexer(object):
+
     """
-    This class is an indexer that will build a search index against the articles in the database
-    and stores the index files into an index directory
+    This class represents the cloud indexer which will index documents in the distributed NOSQL Database and stores the search index files
+    into a directory
     """
     indexDir = None
-    dbManager = MongoManager()
-    store = None
-    analyzer = None
-    writer = None
-    config = None
+    writer  = None
+    dbManager = None
 
+    def __init__(self,dir):
+        self.indexDir = dir
 
-
-    def __init__(self,indir):
-
-        """
-        Inits the current Indexer with the index directory where we have to store the search index folder
-
-        """
-        try:
-            self.indexDir = indir
-            store = SimpleFSDirectory(File(indir))
-            analyzer = LimitTokenCountAnalyzer(StandardAnalyzer(Version.LUCENE_CURRENT), 1048576)
-            config = IndexWriterConfig(Version.LUCENE_CURRENT, analyzer)
-            config.setOpenMode(IndexWriterConfig.OpenMode.CREATE)
-            writer = IndexWriter(store, config)
-
-        except Exception,args:
-
-            print("There was an error during initializing the Cloud Indexer , \n %s" % args)
+        ix = index.create_in(dir,ArticleDocument)
+        self.writer = ix.writer()
+        self.dbManager = MongoManager()
 
 
     def beginIndexing(self):
-        """
-        This method will begin the indexing process against the articles inside the database
-        """
-         #access the database first
-        dbconnect = self.dbManager.connectNow()
 
-        if dbconnect:
-            print ("Connected Successfully to NOSQL Database : MongoDB")
+        print ("************************Begin Indexing************************")
+        counter = 0
+
+        result = self.dbManager.connectNow()
+
+        if result :
+            print ("Connected Successfully to NOSQL Database")
+
         else:
-            print ("There was a problem connecting with the database , please try again")
-
-         #Now , loop over the articles inside the database one by one and index each returned article
+            print ("There was a problem accessing the NOSQL Database")
 
         articles = self.dbManager.getAllArticles()
 
-        if articles :
-
-            print ("**********************************************Begin of Indexing**********************************************")
-
-            for article in articles:
-                self.indexArticle(article)
+        for article in articles:
+            self.indexArticle(article)
+            counter += 1
+            print ("No. Documents Indexed : %d" % int(counter))
 
 
-            #closing everything
-            self.writer.commit()
-            self.writer.close()
-            print ("**********************************************Done Indexing Files**********************************************")
-
-        else:
-            print ("No articles found in the Database , Please check your database or database collection !")
-
-
+        self.writer.commit()
+        print("************************Finished Indexing************************")
 
 
     def indexArticle(self,article):
 
-        """
-        This method will add the current article if valid into the search index
-
-        """
-
-        try:
-
-             print ("Indexing Article with id  : %s " % article['id'])
-
-             if not (len(article.get('Title','')) <= 0 or len(article.get('Abstract','')) <= 0):
-
-                #index the current document
-                doc = ArticleDocument(article.get('id'),article.get('Title',''),article.get('Abstract',''))
-                #add the current document into the writer
-                self.writer.addDocument(doc)
-             else:
-
-                 print ("Excluding Document : %s , Without Either Title or Abstract" % article['id'])
-
-                 pass
-
-        except Exception , e:
-
-            print ("%s" % e)
+        print ("Indexing Document : %s" % article.get('id',''))
+        self.writer.add_document(id=article.get('id'),title=article.get('Title'),abstract=article.get('Abstract'))
 
 
 
-if __name__ == '__main__':
+if __name__ =='__main__':
 
     if len(sys.argv) <= 1:
-        print ("Usage : python indexer.py <Search Index Output Director>")
+        print ("Usage : python indexer.py <Search Index Directory>")
         sys.exit(1)
-    else:
 
-        directory = sys.argv[1]
+    cloudindexer = CloudIndexer(sys.argv[1])
 
-        lucene.initVM(vmargs=['-Djava.awt.headless=true'])
-
-        print ("Lucene Version : %s" % lucene.VERSION)
-
-        indexer = CloudIndexer(directory)
-
-        indexer.beginIndexing()
+    cloudindexer.beginIndexing()
 
 
-
-        
 
 
 
