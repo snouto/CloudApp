@@ -1,10 +1,12 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head>
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>PubMed Search System with Recommendation</title>
 
-    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="{%static 'css/styles.css' %}" />
 
 </head>
 
@@ -15,10 +17,13 @@
     <h1>PubMed Search System</h1>
 
 
-    <form id="searchForm" method="post">
+    <form id="searchForm" method="post" action="/search/">
+
+        {% csrf_token %}
+
         <fieldset>
 
-            <input id="s" type="text" />
+            <input id="s" name="s" type="text" />
 
             <input type="submit" value="Submit" id="submitButton" />
 
@@ -28,6 +33,8 @@
     </form>
 
     <div id="resultsDiv">
+
+        {% block results %}
         <div class="webResult">
             <h2><a href="">Hello World</a></h2>
             <p>This is the content of hello world This is the content of hello world This is the content of hello world This is the content of hello world
@@ -36,6 +43,8 @@
             </p>
             <a href="">Cliniome.com</a>
         </div>
+
+        {% endblock %}
 
     </div> <!-- End of resultsDiv -->
 

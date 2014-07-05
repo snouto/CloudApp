@@ -32,7 +32,16 @@ class MongoManager(object):
         return True
 
     def getArticle(self,pmid):
-        pass
+        articles =  self.db.articles.find({'id':pmid})
+
+        results = []
+
+        for article in articles:
+            print(article)
+            results.append(article)
+
+        return results
+
 
     def getAllArticles(self):
         """

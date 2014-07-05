@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block results %}
+
+       {% if model and model.data %}
+
+         {% for article in model.data %}
+
+        <div class="webResult">
+            <h2><a href="">{{article.Title}}</a></h2>
+            <p>{{article.Abstract|truncatechars:500}}</p>
+            <a href="">Read More</a>
+        </div>
+
+        {% endfor %}
+
+        {% endif %}
+
+ {% endblock %}

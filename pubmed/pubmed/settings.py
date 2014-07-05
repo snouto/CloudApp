@@ -11,14 +11,13 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
+TEMPLATE_DIRS = ['pubmed/views']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'qspf5#r0q(#9)(%zc-^8of##l7lgc8l4pda+g8@*)$vli2wj^-'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -78,5 +77,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-
-STATIC_URL = '/static/'
+STATIC_URL = 'http://localhost:8000/static/'
+STATIC_ROOT = '/Project/CloudProject/code/CloudApp/pubmed/pubmed/views/'
+STATICFILES_DIRS = ( '/Project/CloudProject/code/CloudApp/pubmed/pubmed/views/css/','/Project/CloudProject/code/CloudApp/pubmed/pubmed/views/js/','/Project/CloudProject/code/CloudApp/pubmed/pubmed/views/img/')
+SEARCHINDEX_CORPUS = '/Project/CloudProject/code/CloudApp/pubmed/pubmed/processing/indexdir'

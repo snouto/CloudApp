@@ -8,6 +8,7 @@ from articleSchema import ArticleDocument
 from whoosh.index import create_in
 from Mongo import MongoManager
 from whoosh import index
+from whoosh.qparser import QueryParser
 
 class CloudIndexer(object):
 
@@ -25,6 +26,30 @@ class CloudIndexer(object):
         ix = index.create_in(dir,ArticleDocument)
         self.writer = ix.writer()
         self.dbManager = MongoManager()
+
+
+
+    def loadIndexDirectory(self,dir):
+        self.indexDir = dir
+
+
+    def searchIndex(self,keyword):
+        results = []
+
+        ix = index.open_dir(self.indexDir)
+        queryParser = QueryParser("abstract",ix.schema)
+        query = queryParser.parse(keyword)
+
+        with ix.searcher() as s:
+            outcome = s.search(query)
+
+            for result in outcome:
+                results.append(result)
+
+
+        return results
+
+
 
 
     def beginIndexing(self):
