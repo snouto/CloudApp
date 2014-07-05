@@ -14,7 +14,8 @@ def result(request):
     This method will get the results according to the user inputted query string
 
     """
-    keyword = request.POST.get('s','')
+    keyword = request.GET.get('s','')
+    page = request.GET.get('page','')
     articles = []
     model ={}
     #if the keyword is not empty so proceed forward
@@ -25,8 +26,12 @@ def result(request):
         dbManager.connectNow()
         #initialize the search indexer
         indexer = Searcher(settings.SEARCHINDEX_CORPUS)
+        if page =='':
+            page = int(1)
+        else:
+            page = int(page)
 
-        results = indexer.searchIndex(keyword)
+        results = indexer.searchIndex(keyword,num=page)
 
         print("Keyword is %s and results count is %d " % (keyword,len(results)))
 

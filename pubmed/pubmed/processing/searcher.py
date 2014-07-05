@@ -18,7 +18,7 @@ class Searcher(object):
 
 
 
-    def searchIndex(self,keyword):
+    def searchIndex(self,keyword,num=1):
         results = []
 
         ix = index.open_dir(self.indexDir)
@@ -26,7 +26,7 @@ class Searcher(object):
         query = queryParser.parse(keyword)
 
         with ix.searcher() as s:
-            outcome = s.search(query)
+            outcome = s.search_page(query,num,pagelen=30)
 
             for result in outcome:
                 results.append({'id':result.get('id')})
