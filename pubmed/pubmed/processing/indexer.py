@@ -64,7 +64,7 @@ class CloudIndexer(object):
 
         articles = self.dbManager.getAllArticles()
 
-        if len(articles) > 0 :
+        if articles :
 
             print ("**********************************************Begin of Indexing**********************************************")
 
@@ -92,7 +92,7 @@ class CloudIndexer(object):
 
         try:
 
-             print ("Indexing Article with id  : %d " % article['id'])
+             print ("Indexing Article with id  : %s " % article['id'])
 
              if not (len(article.get('Title','')) <= 0 or len(article.get('Abstract','')) <= 0):
 
@@ -102,13 +102,32 @@ class CloudIndexer(object):
                 self.writer.addDocument(doc)
              else:
 
-                 print ("Excluding Document : %d , Without Either Title or Abstract" % article['id'])
+                 print ("Excluding Document : %s , Without Either Title or Abstract" % article['id'])
 
                  pass
 
         except Exception , e:
 
             print ("%s" % e)
+
+
+
+if __name__ == '__main__':
+
+    if len(sys.argv) <= 1:
+        print ("Usage : python indexer.py <Search Index Output Director>")
+        sys.exit(1)
+    else:
+
+        directory = sys.argv[1]
+
+        lucene.initVM(vmargs=['-Djava.awt.headless=true'])
+
+        print ("Lucene Version : %s" % lucene.VERSION)
+
+        indexer = CloudIndexer(directory)
+
+        indexer.beginIndexing()
 
 
 
