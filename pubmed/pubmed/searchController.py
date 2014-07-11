@@ -74,7 +74,7 @@ def viewArticle(request):
 
                 recommendations = recommendation(articleID)
 
-                print (recommendations)
+
 
                 model = {'model':{'article':articles[0],'recommendations':recommendations}}
 
