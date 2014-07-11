@@ -78,6 +78,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 STATIC_URL = 'http://54.191.59.70/static/'
-STATIC_ROOT = '/home/ec2-user/tools/project/CloudApp/pubmed/pubmed/views/'
-STATICFILES_DIRS = ( '/home/ec2-user/tools/project/CloudApp/pubmed/pubmed/views/css/','/home/ec2-user/tools/project/CloudApp/pubmed/pubmed/views/js/','/home/ec2-user/tools/project/CloudApp/pubmed/pubmed/views/img/')
-SEARCHINDEX_CORPUS = '/home/ec2-user/tools/project/CloudApp/pubmed/pubmed/processing/indexdir/'
+STATIC_ROOT = '/var/www/CloudApp/pubmed/pubmed/views/'
+STATICFILES_DIRS = ( '/var/www/CloudApp/pubmed/pubmed/views/css/','/var/www/CloudApp/pubmed/pubmed/views/js/','/var/www/CloudApp/pubmed/pubmed/views/img/')
+SEARCHINDEX_CORPUS = '/var/www/CloudApp/pubmed/pubmed/processing/indexdir/'
