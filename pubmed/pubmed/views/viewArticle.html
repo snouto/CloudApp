@@ -11,11 +11,11 @@
             <a href="http://www.ncbi.nlm.nih.gov/pubmed/?term={{model.article.id}}" target="_blank">Read More</a>
 
             <div id="recommendation" style="margin-top:8px">
-                <h2 style="margin-top:4px"><u>Recommended Articles</u></h2>
+                <h2><u>Recommended Articles</u></h2>
                 {% for id,recommendation in model.recommendations.items %}
 
                 <div class="webResult">
-                    <h2><u><a href="/search/viewArticle?articleID={{id}}" target="_blank">{{recommendation.title}}</a></u></h2>
+                    <h2 style="margin-top:4px"><u><a href="/search/viewArticle?articleID={{id}}" target="_blank">{{recommendation.title}}</a></u></h2>
                     <p>Date Revised : {{recommendation.rdate}}</p>
                     <p>{{recommendation.abstract|truncatechars:500}}</p>
                     <a href="/search/viewArticle?articleID={{id}}" target="_blank">Read More</a>
