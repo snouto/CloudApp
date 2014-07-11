@@ -1,7 +1,7 @@
 __author__ = 'mohamed'
 
 import math
-from collections import Counter
+from Counter import Counter
 
 class CosineSimilarity(object):
 
