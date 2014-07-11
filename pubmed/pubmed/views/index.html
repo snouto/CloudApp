@@ -7,9 +7,9 @@
          {% for article in model.data %}
 
         <div class="webResult">
-            <h2><a href="">{{article.Title}}</a></h2>
+            <h2><a href="/search/viewArticle?articleID={{article.id}}">{{article.Title}}</a></h2>
             <p>{{article.Abstract|truncatechars:500}}</p>
-            <a href="">Read More</a>
+            <a href="/search/viewArticle?articleID={{article.id}}">Read More</a>
         </div>
 
         {% endfor %}

@@ -54,7 +54,7 @@ def pickleObject(vector,fileName):
         return False
 
 
-def getArticle(file):
+def getArticle(file,start,end):
     """
     This function will retrieve the article with pmid from the database
 
@@ -65,24 +65,36 @@ def getArticle(file):
     #cosine = CosineSimilarity()
     bigVector = []
     articles = mongo.db.articles.find()
-    index = 0
+    index = int(start)
     subindex = 0
+    allArticles = []
+
+    #load all articles first
+    for all in mongo.db.articles.find():
+        allArticles.append(all)
+
+
+    print("All Articles have been loaded successfully into Memory")
+
     #access articles in the database
-    for article in articles:
+    for article in allArticles[int(start):int(end)]:
         index += 1
 
-        for paper in mongo.db.articles.find():
+        for paper in allArticles:
 
             subindex += 1
 
             if article['id'] != paper['id']:
                 print("Processing %s - %s" % (index,subindex))
                 #loop over the master Meshes first , because they are our template
-                masterAbstract= str(article['Abstract']).split()
-                otherWords = str(paper['Abstract']).split()
-                masterVector , otherVector = buildVector(masterAbstract,otherWords)
-                cosineValue = cosine(masterVector,otherVector)
-                bigVector.append((int(article['id']),int(paper['id']),float(cosineValue)))
+                try:
+                    masterAbstract= str(article['Abstract']).split()
+                    otherWords = str(paper['Abstract']).split()
+                    masterVector , otherVector = buildVector(masterAbstract,otherWords)
+                    cosineValue = cosine(masterVector,otherVector)
+                    bigVector.append((int(article['id']),int(paper['id']),float(cosineValue)))
+                except Exception , args:
+                    continue
 
         bigVector.sort(key=lambda keys:keys[2] , reverse=True)
 
@@ -103,9 +115,11 @@ if __name__ == '__main__':
 
     article = "10611347"
 
-    if sys.argv <= 1:
-        print ("Usage : Python distanceCalculator.py <File Name>")
+    if sys.argv <= 2:
+        print ("Usage : Python distanceCalculator.py <File Name> <Start> <End>")
     else:
 
         file = sys.argv[1]
-        getArticle(file=file)
+        start = sys.argv[2]
+        end = sys.argv[3]
+        getArticle(file=file,start=start,end=end)
