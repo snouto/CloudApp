@@ -2,7 +2,8 @@ __author__ = 'mohamed'
 
 from Mongo import MongoManager
 import math
-from collections import Counter
+from Counter import Counter
+
 from CosineSimilarity import CosineSimilarity
 import pickle , sys
 
