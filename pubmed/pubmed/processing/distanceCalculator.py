@@ -37,16 +37,13 @@ def cosine(masterVector, otherVector):
 
 
 
-def pickleObject(vector,fileName):
+def pickleObject(vector,file):
 
     try:
-        fileObject = open(fileName,"wb")
+
 
         #now start pickling the vector onto disk
-        pickle.dump(vector,fileObject)
-
-        #close the file
-        fileObject.close()
+        pickle.dump(vector,file)
 
         return True
 
@@ -65,10 +62,13 @@ def getArticle(file,start,end):
     #access the meshes of the first article retrieved
     #cosine = CosineSimilarity()
     bigVector = []
+    finalVector = []
     articles = mongo.db.articles.find()
     index = int(start)
     subindex = 0
     allArticles = []
+
+
 
     #load all articles first
     for all in mongo.db.articles.find():
@@ -78,15 +78,16 @@ def getArticle(file,start,end):
     print("All Articles have been loaded successfully into Memory")
 
     #access articles in the database
-    for article in allArticles[int(start):int(end)]:
+    for article in allArticles[int(start):]:
+        bigVector = []
         index += 1
-
+        print("%s" % (index))
         for paper in allArticles:
 
             subindex += 1
 
             if article['id'] != paper['id']:
-                print("Processing %s - %s" % (index,subindex))
+
                 #loop over the master Meshes first , because they are our template
                 try:
                     masterAbstract= str(article['Abstract']).split()
@@ -99,14 +100,20 @@ def getArticle(file,start,end):
 
         bigVector.sort(key=lambda keys:keys[2] , reverse=True)
 
-        result = pickleObject(bigVector[0:20],fileName=file)
-
-        if result:
-            print ("Pickling Done and everything controlled , Happy recommendation using Cosine Similarity ")
-        else:
-            print ("There was a problem in pickling the object")
+        finalVector.append(bigVector[0:20])
 
         subindex = 0
+
+    openedFile = open(file,"wb")
+    result = pickleObject(finalVector,file=openedFile)
+    openedFile.flush()
+
+    openedFile.close()
+    print ("Closing the pickling file")
+
+
+
+
 
 
 
