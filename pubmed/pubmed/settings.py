@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-TEMPLATE_DIRS = ['/var/www/CloudApp/pubmed/pubmed/views']
+TEMPLATE_DIRS = ['/var/www/html/CloudApp/pubmed/pubmed/views']
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -78,6 +78,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 STATIC_URL = 'http://54.187.146.180/static/'
-STATIC_ROOT = '/var/www/CloudApp/pubmed/pubmed/views/'
-STATICFILES_DIRS = ( '/var/www/CloudApp/pubmed/pubmed/views/css/','/var/www/CloudApp/pubmed/pubmed/views/js/','/var/www/CloudApp/pubmed/pubmed/views/img/')
-SEARCHINDEX_CORPUS = '/var/www/CloudApp/pubmed/pubmed/processing/indexdir/'
+STATIC_ROOT = '/var/www/html/CloudApp/pubmed/pubmed/views/'
+STATICFILES_DIRS = ( '/var/www/html/CloudApp/pubmed/pubmed/views/css/','/var/www/html/CloudApp/pubmed/pubmed/views/js/','/var/www/html/CloudApp/pubmed/pubmed/views/img/')
+SEARCHINDEX_CORPUS = '/var/www/html/CloudApp/pubmed/pubmed/processing/indexdir/'
